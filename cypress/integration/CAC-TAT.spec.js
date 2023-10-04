@@ -140,7 +140,7 @@ describe('Central de Atendimentos ao Cliente TAT', () => {
       })
   })
 
-  it.only('Deve preencher o campo de telefone e validar a quantidade', () => {
+  it('Deve preencher o campo de telefone e validar a quantidade', () => {
     cy.get('#phone')
       .type('00000000000')
       .invoke('val')
@@ -148,4 +148,31 @@ describe('Central de Atendimentos ao Cliente TAT', () => {
       .should('be.gt', 0)
       .should('eq', 11)
   })
+
+  it('Deve marcar o primeiro input do tipo radio', () => {
+    cy.get('[type="radio"]').first().check();
+  })
+
+  it('marca o tipo de atendimento "Feedback"', () => {
+    cy.get('[type="radio"]')
+      .check('feedback')
+      .should('be.checked')
+      .and('have.value', 'feedback');
+
+    // OUTRA FORMA DE FAZER 👇
+
+    // cy.get('input[type="radio"][value="feedback"]')
+    //   .check()
+    //   .should('have.value', 'feedback');
+  })
+
+  it.only('marca cada tipo de atendimento', () => {
+    cy.get('[type="radio"]')
+      .should('have.length', 3)
+      .each(($radio) => {
+        cy.wrap($radio)
+          .check()
+          .should('be.checked');
+      });
+    })
 });
