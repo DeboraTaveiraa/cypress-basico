@@ -50,14 +50,14 @@ describe('Central de Atendimentos ao Cliente TAT', () => {
     cy.get('#phone').type('TESTE').should('have.value', '');
   });
 
-  it('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', () => {
+  it.only('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', () => {
     cy.get('#firstName').type('TESTE');
 
     cy.get('#lastName').type('TESTE');
 
     cy.get('#email').type('teste-exemplo.com');
 
-    cy.get('#phone-checkbox').click();
+    cy.get('#phone-checkbox').check();
 
     cy.contains('button', 'Enviar').click();
     // cy.get('button[type=submit]').click();
@@ -138,7 +138,7 @@ describe('Central de Atendimentos ao Cliente TAT', () => {
 
         })
       })
-  })
+  });
 
   it('Deve preencher o campo de telefone e validar a quantidade', () => {
     cy.get('#phone')
@@ -151,7 +151,7 @@ describe('Central de Atendimentos ao Cliente TAT', () => {
 
   it('Deve marcar o primeiro input do tipo radio', () => {
     cy.get('[type="radio"]').first().check();
-  })
+  });
 
   it('marca o tipo de atendimento "Feedback"', () => {
     cy.get('[type="radio"]')
@@ -164,9 +164,9 @@ describe('Central de Atendimentos ao Cliente TAT', () => {
     // cy.get('input[type="radio"][value="feedback"]')
     //   .check()
     //   .should('have.value', 'feedback');
-  })
+  });
 
-  it.only('marca cada tipo de atendimento', () => {
+  it('marca cada tipo de atendimento', () => {
     cy.get('[type="radio"]')
       .should('have.length', 3)
       .each(($radio) => {
@@ -174,5 +174,24 @@ describe('Central de Atendimentos ao Cliente TAT', () => {
           .check()
           .should('be.checked');
       });
-    })
+    });
+
+    it('marcando todos os inputs do tipo checkbox', () => {
+      cy.get('input[type="checkbox"]')
+        .should('have.length', 2)
+        .each(($checkbox) => {
+          cy.wrap($checkbox)
+            .check()
+            .should('be.checked');
+        })
+    });
+
+    it('marca ambos checkboxes, depois desmarca o último', () => {
+      cy.get('#check input[type="checkbox"]')  
+        .check()
+        .should('be.checked')
+        .last()
+        .uncheck()        
+        .should('not.be.checked')
+    });
 });
